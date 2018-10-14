@@ -1,0 +1,45 @@
+version: '2'
+
+services:
+    php:
+        build: docker/php
+        tty: true
+        restart: on-failure
+        volumes:
+          - '.:/symfony'
+        links:
+          - db
+
+    nginx:
+         build: docker/nginx
+         tty: true
+         restart: on-failure
+         volumes:
+           - './public:/symfony'
+         links:
+             - php
+         ports:
+             - '80:80'
+
+    elasticsearch:
+        image: elasticsearch
+
+        ports:
+          - "9200:9200"
+
+    kibana:
+        image: kibana
+        links:
+           - elasticsearch:elasticsearch
+        ports:
+                - "5601:5601"
+    db:
+        image: mysql:5.7
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+
+    adminer:
+        image: adminer
+        ports:
+          - 8080:8080

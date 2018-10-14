@@ -1,0 +1,47 @@
+# Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/setup.md
+fos_elastica:
+    clients:
+        default: { host: elasticsearch, port: 9200 }
+    indexes:
+        post_index:
+            client: default
+            index_name: post_index
+            types:
+                post:
+                    properties:
+                        id:
+                            type: integer
+                        title:
+                            type: text
+                        description:
+                            type: text
+                        category:
+                            type: nested
+                            properties:
+                                name:
+                                    type: keyword
+
+                                id :
+                                    type : integer
+                                    index: not_analyzed
+
+                    persistence:
+                        driver: orm
+                        model: App\Entity\Post
+                        finder: ~
+                        provider: ~
+                        listener: ~
+#
+#                category:
+#                        properties:
+#                            id:
+#                                type: integer
+#                            name:
+#                                type: keyword
+#                                index: not_analyzed
+#                        persistence:
+#                            driver: orm
+#                            model: App\Entity\Category
+#                            finder: ~
+#                            provider: ~
+#                            listener: ~

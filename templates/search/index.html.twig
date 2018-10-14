@@ -1,0 +1,23 @@
+
+{% extends  'base.html.twig' %}
+
+{% block body %}
+    {% for tagAgg in aggregation.buckets %}
+ <a href="?cat={{ tagAgg.key }}">      {{ tagAgg.key }} ({{ tagAgg.doc_count }})</a> {% if not loop.last %}, {% endif %}
+    {% endfor %}
+    <form action="{{ path('search') }}" method="get">
+        <input type="text" name="q">
+        <input type="submit" value="submit">
+        <a href="{{ path('search') }}">Reset</a>
+    </form>
+
+    {% for item in data %}
+        {{ item.id }} - {{ item.title }} - {{ item.description }} <br>
+    {% endfor %}
+
+    {% if pagerfanta %}
+        <div class="pagerfanta">
+            {{ pagerfanta(pagerfanta, 'twitter_bootstrap4') }}
+        </div>
+    {% endif %}
+{% endblock %}

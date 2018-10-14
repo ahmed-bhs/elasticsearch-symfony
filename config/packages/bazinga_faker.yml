@@ -1,0 +1,7 @@
+bazinga_faker:
+    orm: doctrine
+    entities:
+        App\Entity\Post:
+            number: 60
+        App\Entity\Category:
+            number: 10

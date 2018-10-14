@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Controller;
+
+use Symfony\Component\Routing\Annotation\Route;
+use App\Service\PostElasticsearchServiceInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * @Route("/search", service="application_search.controller.search")
+ */
+class SearchController extends Controller
+{
+    private $postElasticsearchService;
+
+    public function __construct(
+        PostElasticsearchServiceInterface $postElasticsearchService
+    ) {
+        $this->postElasticsearchService = $postElasticsearchService;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @Method({"GET"})
+     * @Route("/elasticsearch")
+     * @Template()
+     *
+     * @return array
+     */
+    public function searchElasticsearchAction(Request $request)
+    {
+        $page = $request->query->get('page', 1);
+        $limit = $request->query->get('limit', 10);
+        $sort = $request->query->get('sort');
+        $fields = $request->query->get('fields');
+        $keywords = $request->query->get('keywords');
+
+        $posts = $this->postElasticsearchService->getPosts($page, $limit, $sort, $fields, $keywords);
+
+        return [
+            'page' => $page,
+            'limit' => $limit,
+            'sort' => $sort,
+            'fields' => $fields,
+            'keywords' => $keywords,
+            'posts' => $posts
+        ];
+    }
+}

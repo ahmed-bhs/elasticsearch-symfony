@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+    php:
+        build: docker/php
+        tty: true
+        restart: on-failure
+        volumes:
+          - '.:/symfony'
+        command: service supervisor start
+        ports:
+          - '9001:9001'
+
+    nginx:
+         build: docker/nginx
+         tty: true
+         restart: on-failure
+         volumes:
+           - './public:/symfony'
+         links:
+             - php
+         ports:
+             - '80:80'
+
+    rabbitmq:
+        image: rabbitmq:3.4-management
+        tty: true
+        ports:
+              - "15672:15672"
+
+    maildev:
+        image: djfarrelly/maildev
+        tty: true
+        ports:
+              - "1080:80"
+    redis:
+        image: redis
+        tty: true
+        ports:
+          - "6379:6379"
