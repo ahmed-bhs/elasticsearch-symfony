@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}{% endblock %}
 
 {% block body %}
     <style>
@@ -9,13 +9,7 @@
     </style>
 
     <div class="example-wrapper">
-        <h1>Hello {{ controller_name }}! ✅</h1>
-
-        This friendly message is coming from:
-        <ul>
-            <li>Your controller at <code><a href="{{ 'src/Controller/SearchController.php'|file_link(0) }}">src/Controller/SearchController.php</a></code></li>
-            <li>Your template at <code><a href="{{ 'templates/search/index.html.twig'|file_link(0) }}">templates/search/index.html.twig</a></code></li>
-        </ul>
+        <a href="{{ path('search') }}" >Visit ElasticSearch interface </a>
     </div>
 {% endblock %}
 
